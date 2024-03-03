@@ -1,0 +1,7 @@
+{
+  "name": "capasitor-pet",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
