@@ -28,7 +28,7 @@ import {
 } from "@ionic/vue"
 
 type Props = {
-  icon: string
+  icon?: string
 }
 
 const props = defineProps<Props>()

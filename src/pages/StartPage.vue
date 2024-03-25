@@ -15,7 +15,7 @@
               size="large"
               color="light"
               expand="block"
-              @click="test()"
+              @click="onLoginClick()"
             >
               Log in
             </IonButton>
@@ -26,6 +26,7 @@
               fill="outline"
               color="light"
               expand="block"
+              @click="onRegisterClick()"
             >
               SignUp
             </IonButton>
@@ -37,13 +38,16 @@
 </template>
 
 <script setup lang="ts">
-import { useIonRouter } from "@ionic/vue"
-import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonButton } from "@ionic/vue"
+import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonButton, useIonRouter } from "@ionic/vue"
 
 const router = useIonRouter()
 
-const test = () => {
-  router.push("/login")
+const onLoginClick = () => {
+  router.push("/welcome/login")
+}
+
+const onRegisterClick = () => {
+  router.push("/welcome/register")
 }
 </script>
 

@@ -1,11 +1,5 @@
 <template>
   <IonPage>
-    <IonHeader>
-      <IonToolbar>
-        <IonTitle>Discover</IonTitle>
-      </IonToolbar>
-    </IonHeader>
-
     <IonContent>
       <IonRefresher
         slot="fixed"
@@ -13,12 +7,14 @@
       >
         <IonRefresherContent />
       </IonRefresher>
+      <!-- 
+      <IonButton @click="onCreateActivity()">{{ $t("activities.createNew") }}</IonButton> -->
 
       <div class="categories-tiles">
         <EventCategoryPreview
-          v-for="event in icons"
-          :icon="event"
-          :key="event"
+          v-for="event in fetchedActivities"
+          :icon="event.activity_type"
+          :key="event.activity_id"
           class="categories-tiles__item"
         />
       </div>
@@ -37,9 +33,11 @@ import {
   IonRefresher,
   IonRefresherContent,
   IonButton,
-  useIonRouter
+  useIonRouter,
+  onIonViewDidEnter
 } from "@ionic/vue"
 import EventCategoryPreview from "../components/EventCategoryPreview.vue"
+import { Activity, createNewActivity, fetchActivities } from "../api/activities"
 
 interface RefresherEventDetail {
   complete(): void
@@ -49,20 +47,38 @@ interface RefresherCustomEvent extends CustomEvent {
   target: HTMLIonRefresherElement
 }
 
-const icons = ["heart", "accessibility", "airplane", "bag", "basketball", "brush"]
+const fetchedActivities = ref<Array<Activity>>([])
+// const icons = ["heart", "accessibility", "airplane", "bag", "basketball", "brush"]
 
-const router = useIonRouter()
 const handleRefresh = (event: RefresherCustomEvent) => {
   // Any calls to load data go here
-  event.target.complete()
+  try {
+    getActivities()
+    event.target.complete()
+  } catch (e) {
+    alert(e)
+  }
 }
 
-const isAuthenticated = inject<Ref>("isAuthenticated")
+const onCreateActivity = async () => {
+  const { data } = await createNewActivity({
+    activity_name: "airplane",
+    activity_participants: 1,
+    activity_type: "airplane"
+  })
+}
 
-onMounted(() => {
-  if (!isAuthenticated?.value) {
-    router.push("/welcome")
+const getActivities = async () => {
+  try {
+    const { data } = await fetchActivities({ queryParams: { limit: 10, offset: 10 } })
+    fetchedActivities.value = data.results
+  } catch (e: any) {
+    fetchedActivities.value = e.response.data
   }
+}
+
+onIonViewDidEnter(() => {
+  getActivities()
 })
 </script>
 

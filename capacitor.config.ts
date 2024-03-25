@@ -1,12 +1,13 @@
-import { CapacitorConfig } from '@capacitor/cli';
+import { CapacitorConfig } from "@capacitor/cli"
 
 const config: CapacitorConfig = {
-  appId: 'capasitor.pet',
-  appName: 'capasitor-pet',
-  webDir: 'dist',
+  appId: "capasitor.pet",
+  appName: "capasitor-pet",
+  webDir: "dist",
   server: {
-    androidScheme: 'https'
+    androidScheme: "https"
+    // allowNavigation: [".*://localhost:8000/.*"]
   }
-};
+}
 
-export default config;
+export default config

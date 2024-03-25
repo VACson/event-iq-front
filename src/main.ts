@@ -1,8 +1,9 @@
 import { createApp } from "vue"
 import App from "./App.vue"
 import router from "./router"
-import { IonicVue } from "@ionic/vue"
+import { i18n } from "./locales/utils"
 
+import { IonicVue } from "@ionic/vue"
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/vue/css/core.css"
 
@@ -33,7 +34,11 @@ addIcons({
   brush
 })
 
-const app = createApp(App).use(IonicVue).use(router)
+const app = createApp(App)
+app.use(IonicVue)
+app.use(router)
+
+app.use(i18n)
 
 router.isReady().then(() => {
   app.mount("#app")

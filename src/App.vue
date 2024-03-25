@@ -1,23 +1,71 @@
 <template>
-  <IonApp color="light">
+  <IonApp
+    color="light"
+    class="ion-padding"
+  >
     <IonRouterOutlet />
   </IonApp>
 </template>
 
 <script setup lang="ts">
-import { IonApp } from "@ionic/vue"
+import { IonApp, useIonRouter } from "@ionic/vue"
 import { IonRouterOutlet } from "@ionic/vue"
-import { computed, provide, ref } from "vue"
+import { computed, onBeforeMount, provide, ref } from "vue"
+import { User, getUserFromStorage } from "./utils/auth"
+import { API } from "./utils/http"
+import { useRouter } from "vue-router"
+import { StatusBar } from "@capacitor/status-bar"
+import { Capacitor } from "@capacitor/core"
 
-type User = { id?: number; name?: string; token?: string }
+// iOS only
+window.addEventListener("statusTap", function () {
+  console.log("statusbar tapped")
+})
 
-const user = ref<User>({ id: undefined, name: undefined, token: undefined })
-const isAuthenticated = computed(() => Boolean(user.value.token))
+const setStatusBarStyleDark = async () => {
+  if (!Capacitor.isNativePlatform()) return
+  await StatusBar.hide()
+}
+
+const router = useIonRouter()
+const vueRouter = useRouter()
+
+const user = ref<User>({ email: undefined, fullname: undefined, token: undefined })
+const userInfo = computed(() => Boolean(user.value))
 
 const setUser = (payload: User) => {
   user.value = { ...user.value, ...payload }
+  onAuthSuccess(payload)
 }
 
-provide("isAuthenticated", isAuthenticated)
+const onAuthSuccess = (payload: User) => {
+  API.defaults.headers.common["Authorization"] = "Bearer " + payload.token
+
+  if (
+    vueRouter?.currentRoute?.value?.path &&
+    vueRouter.currentRoute.value.path.startsWith("/welcome")
+  ) {
+    router.push("/discover")
+  }
+}
+
+onBeforeMount(async () => {
+  setStatusBarStyleDark()
+  if (user.value.token) {
+    onAuthSuccess(user.value)
+    return
+  }
+
+  const userInfo = await getUserFromStorage()
+
+  if (userInfo) {
+    setUser(userInfo)
+    return
+  }
+
+  router.push("/welcome")
+})
+
+provide("userInfo", userInfo.value)
 provide("setUser", setUser)
 </script>

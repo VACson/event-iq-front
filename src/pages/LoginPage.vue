@@ -10,7 +10,7 @@
 
       <IonList>
         <IonListHeader>
-          <IonLabel class="label">Log in to your account</IonLabel>
+          <IonLabel class="label">{{ $t("auth.loginTitle") }}</IonLabel>
         </IonListHeader>
       </IonList>
       <IonInput
@@ -31,7 +31,7 @@
         color="dark"
         @click="onSubmit"
       >
-        LOG IN
+        {{ $t("auth.login") }}
       </IonButton>
     </IonContent>
   </IonPage>
@@ -52,6 +52,7 @@ import {
   useIonRouter
 } from "@ionic/vue"
 import * as authApi from "../api/auth"
+import { saveUserToStorage } from "../utils/auth"
 
 const setUser = inject<Function>("setUser")
 
@@ -65,12 +66,14 @@ const form = reactive({
 const onSubmit = async () => {
   const { data } = await authApi.login(form)
   if (!setUser) return
+
+  saveUserToStorage(data)
   setUser(data)
-  router.push("/discover")
+  router.push({ name: "Discover" })
 }
 
 const onReturn = () => {
-  router.push("/welcome")
+  router.push({ name: "Welcome" })
 }
 </script>
 
