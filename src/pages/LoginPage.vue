@@ -53,10 +53,12 @@ import {
 } from "@ionic/vue"
 import * as authApi from "../api/auth"
 import { saveUserToStorage } from "../utils/auth"
+import { useRouter } from "vue-router"
 
 const setUser = inject<Function>("setUser")
 
 const router = useIonRouter()
+const vueRouter = useRouter()
 
 const form = reactive({
   email: "",
@@ -70,6 +72,7 @@ const onSubmit = async () => {
   saveUserToStorage(data)
   setUser(data)
   router.push({ name: "Discover" })
+  vueRouter.go(0)
 }
 
 const onReturn = () => {

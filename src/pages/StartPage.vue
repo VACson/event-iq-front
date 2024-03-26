@@ -43,11 +43,11 @@ import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonButton, useIonRouter }
 const router = useIonRouter()
 
 const onLoginClick = () => {
-  router.push("/welcome/login")
+  router.navigate({ name: "Login" })
 }
 
 const onRegisterClick = () => {
-  router.push("/welcome/register")
+  router.navigate({ name: "Register" })
 }
 </script>
 

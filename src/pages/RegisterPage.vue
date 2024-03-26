@@ -78,7 +78,7 @@ const onSubmit = async () => {
 }
 
 const onReturn = () => {
-  router.push("/welcome")
+  router.navigate({ name: "Welcome" })
 }
 </script>
 

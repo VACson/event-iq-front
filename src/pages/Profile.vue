@@ -101,7 +101,7 @@ const getUserData = async (firstFetch: boolean = true) => {
     isPending.value = false
   } catch (error: any) {
     if (error?.response?.status !== 401 || !firstFetch) {
-      router.push({ name: "Discover" })
+      router.navigate({ name: "Discover" })
       return
     }
 

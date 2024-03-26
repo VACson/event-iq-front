@@ -40,12 +40,13 @@ const setUser = (payload: User) => {
 
 const onAuthSuccess = (payload: User) => {
   API.defaults.headers.common["Authorization"] = "Bearer " + payload.token
+  console.log(vueRouter?.currentRoute?.value)
 
   if (
     vueRouter?.currentRoute?.value?.path &&
-    vueRouter.currentRoute.value.path.startsWith("/welcome")
+    vueRouter.currentRoute.value.path.startsWith("/login")
   ) {
-    router.push("/discover")
+    router.navigate({ name: "Discover" })
   }
 }
 
@@ -63,7 +64,7 @@ onBeforeMount(async () => {
     return
   }
 
-  router.push("/welcome")
+  router.push({ name: "Welcome" })
 })
 
 provide("userInfo", userInfo.value)
