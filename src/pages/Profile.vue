@@ -48,7 +48,7 @@
             style="min-width: 100px"
           />
           <b v-else>
-            {{ userData?.fullname }}
+            {{ userData?.username }}
           </b>
         </IonText>
 

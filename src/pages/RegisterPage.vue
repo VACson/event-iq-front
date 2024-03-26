@@ -27,7 +27,7 @@
       />
       <IonInput
         class="form-item"
-        v-model="form.fullname"
+        v-model="form.username"
         placeholder="Name"
       />
 
@@ -66,7 +66,7 @@ const router = useIonRouter()
 const form = reactive({
   email: "",
   password: "",
-  fullname: ""
+  username: ""
 })
 
 const onSubmit = async () => {

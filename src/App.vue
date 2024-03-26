@@ -30,7 +30,7 @@ const setStatusBarStyleDark = async () => {
 const router = useIonRouter()
 const vueRouter = useRouter()
 
-const user = ref<User>({ email: undefined, fullname: undefined, token: undefined })
+const user = ref<User>({ email: undefined, username: undefined, token: undefined })
 const userInfo = computed(() => Boolean(user.value))
 
 const setUser = (payload: User) => {

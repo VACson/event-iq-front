@@ -2,7 +2,7 @@ import { Preferences } from "@capacitor/preferences"
 
 export type User = {
   email?: string
-  fullname?: string
+  username?: string
   avatar?: string
   description?: string
   token?: string
