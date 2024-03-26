@@ -76,7 +76,8 @@ import {
   IonIcon,
   IonText,
   IonSkeletonText,
-  IonAvatar
+  IonAvatar,
+  onIonViewWillEnter
 } from "@ionic/vue"
 import { ref } from "vue"
 import { nextTick } from "vue"
@@ -133,6 +134,7 @@ const getImageUrl = (image: string): string => {
 }
 
 onMounted(() => nextTick(getUserData))
+onIonViewWillEnter(() => nextTick(getUserData))
 </script>
 
 <style scoped lang="scss">
