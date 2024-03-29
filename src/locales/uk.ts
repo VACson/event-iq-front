@@ -1,8 +1,10 @@
 export default {
   auth: {
-    login: "Login",
-    signup: "Sign up",
-    acti: "Acti"
+    login: "Увійти",
+    signup: "Зареєструватися",
+    acti: "Acti",
+    login_title: "Введіть дані користувача",
+    register_title: "Реєстрація нового користувача"
   },
   activities: {
     createNew: "Створити нову активність"
@@ -11,7 +13,7 @@ export default {
     title: "Досліджуй"
   },
   create_page: {
-    title: "Створити нове"
+    title: "Створи нове"
   },
   profile: {
     title: "Профіль"

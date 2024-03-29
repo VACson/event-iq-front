@@ -3,7 +3,8 @@ export default {
     acti: "Acti",
     login: "Login",
     signup: "Sign up",
-    loginTitle: "Log in to your account"
+    login_title: "Log in to your account",
+    register_title: "Register new account"
   },
   activities: {
     createNew: "Create new activity"

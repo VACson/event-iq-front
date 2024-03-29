@@ -2,22 +2,23 @@
   <IonPage>
     <IonContent class="ion-padding">
       <IonButton
-        @click="onReturn"
         class="return-back"
+        routerLink="/"
+        routerDirection="back"
       >
         <IonIcon :icon="returnUpBack" />
       </IonButton>
 
       <IonList>
         <IonListHeader>
-          <IonLabel class="label">{{ $t("auth.loginTitle") }}</IonLabel>
+          <IonLabel class="label">{{ $t("auth.register_title") }}</IonLabel>
         </IonListHeader>
       </IonList>
       <IonInput
         class="form-item"
         type="email"
         v-model="form.email"
-        placeholder="Username"
+        placeholder="Email"
       />
       <IonInput
         class="form-item"
@@ -28,7 +29,7 @@
       <IonInput
         class="form-item"
         v-model="form.username"
-        placeholder="Name"
+        placeholder="Username"
       />
 
       <IonButton
@@ -36,6 +37,10 @@
         color="dark"
         @click="onSubmit"
       >
+        <IonSpinner
+          v-if="isFetching"
+          style="height: 16px"
+        />
         {{ $t("auth.signup") }}
       </IonButton>
     </IonContent>
@@ -44,7 +49,7 @@
 
 <script setup lang="ts">
 import { returnUpBack } from "ionicons/icons"
-import { inject, reactive } from "vue"
+import { inject, reactive, ref } from "vue"
 import {
   IonPage,
   IonContent,
@@ -54,14 +59,15 @@ import {
   IonLabel,
   IonButton,
   IonInput,
-  useIonRouter
+  useIonRouter,
+  IonSpinner
 } from "@ionic/vue"
 import * as authApi from "../api/auth"
 import { saveUserToStorage } from "../utils/auth"
 
 const setUser = inject<Function>("setUser")
-
 const router = useIonRouter()
+const isFetching = ref(false)
 
 const form = reactive({
   email: "",
@@ -70,15 +76,19 @@ const form = reactive({
 })
 
 const onSubmit = async () => {
-  const { data } = await authApi.registerUser(form)
-  if (!setUser) return
+  try {
+    isFetching.value = true
+    const { data } = await authApi.registerUser(form)
+    if (!setUser) return
 
-  saveUserToStorage(data)
-  setUser(data)
-}
+    saveUserToStorage(data)
+    setUser(data)
 
-const onReturn = () => {
-  router.navigate({ name: "Welcome" })
+    router.push({ name: "Discover" })
+  } catch {
+  } finally {
+    isFetching.value = false
+  }
 }
 </script>
 

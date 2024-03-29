@@ -2,7 +2,8 @@
   <IonPage>
     <IonContent class="ion-padding">
       <IonButton
-        @click="onReturn"
+        routerLink="/"
+        routerDirection="back"
         class="return-back"
       >
         <IonIcon :icon="returnUpBack" />
@@ -10,14 +11,14 @@
 
       <IonList>
         <IonListHeader>
-          <IonLabel class="label">{{ $t("auth.loginTitle") }}</IonLabel>
+          <IonLabel class="label">{{ $t("auth.login_title") }}</IonLabel>
         </IonListHeader>
       </IonList>
       <IonInput
         class="form-item"
         type="email"
         v-model="form.email"
-        placeholder="Username"
+        placeholder="Email"
       />
       <IonInput
         class="form-item"
@@ -31,6 +32,10 @@
         color="dark"
         @click="onSubmit"
       >
+        <IonSpinner
+          v-if="isFetching"
+          style="height: 16px"
+        />
         {{ $t("auth.login") }}
       </IonButton>
     </IonContent>
@@ -39,7 +44,7 @@
 
 <script setup lang="ts">
 import { returnUpBack } from "ionicons/icons"
-import { inject, reactive } from "vue"
+import { inject, reactive, ref } from "vue"
 import {
   IonPage,
   IonContent,
@@ -49,7 +54,8 @@ import {
   IonLabel,
   IonButton,
   IonInput,
-  useIonRouter
+  useIonRouter,
+  IonSpinner
 } from "@ionic/vue"
 import * as authApi from "../api/auth"
 import { saveUserToStorage } from "../utils/auth"
@@ -60,23 +66,28 @@ const setUser = inject<Function>("setUser")
 const router = useIonRouter()
 const vueRouter = useRouter()
 
+const isFetching = ref(false)
+
 const form = reactive({
   email: "",
   password: ""
 })
 
 const onSubmit = async () => {
-  const { data } = await authApi.login(form)
-  if (!setUser) return
+  try {
+    isFetching.value = true
 
-  saveUserToStorage(data)
-  setUser(data)
-  router.push({ name: "Discover" })
-  vueRouter.go(0)
-}
+    const { data } = await authApi.login(form)
+    if (!setUser) return
 
-const onReturn = () => {
-  router.push({ name: "Welcome" })
+    saveUserToStorage(data)
+    setUser(data)
+    router.push({ name: "Discover" })
+    vueRouter.go(0)
+  } catch {
+  } finally {
+    isFetching.value = false
+  }
 }
 </script>
 

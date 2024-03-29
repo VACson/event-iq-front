@@ -118,14 +118,12 @@ const onPhotoChange = async (e: Event) => {
   const { files } = e.target as HTMLInputElement
   if (!files?.length) return
 
-  console.log(files)
-
   const payload = new FormData()
   payload.append("file", files[0])
 
   const { data } = await updateProfilePhoto({ payload })
 
-  saveUserToStorage(data)
+  saveUserToStorage({ ...userData.value, ...data })
   userData.value = data
 }
 

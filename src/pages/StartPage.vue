@@ -17,7 +17,7 @@
               expand="block"
               @click="onLoginClick()"
             >
-              Log in
+              {{ $t("auth.login") }}
             </IonButton>
           </IonCol>
           <IonCol>
@@ -28,7 +28,7 @@
               expand="block"
               @click="onRegisterClick()"
             >
-              SignUp
+              {{ $t("auth.signup") }}
             </IonButton>
           </IonCol>
         </IonRow>

@@ -24,8 +24,7 @@ const slavicLanguagesPluralizationRule = (choice: number, choicesLength: number)
 }
 
 export const i18n = createI18n({
-  locale: "en",
-  // the custom rules here ...
+  locale: "uk",
   pluralizationRules: {
     uk: slavicLanguagesPluralizationRule
   },
