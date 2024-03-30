@@ -19,7 +19,7 @@ import { Capacitor } from "@capacitor/core"
 
 // iOS only
 window.addEventListener("statusTap", function () {
-  console.log("statusbar tapped")
+  // console.log("statusbar tapped")
 })
 
 const setStatusBarStyleDark = async () => {
@@ -40,7 +40,6 @@ const setUser = (payload: User) => {
 
 const onAuthSuccess = (payload: User) => {
   API.defaults.headers.common["Authorization"] = "Bearer " + payload.token
-  console.log(vueRouter?.currentRoute?.value)
 
   if (
     vueRouter?.currentRoute?.value?.path &&

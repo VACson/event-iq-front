@@ -1,67 +1,99 @@
 <template>
-  <IonPage fullscreen>
+  <IonPage>
+    <IonMenu
+      contentId="main-content"
+      side="end"
+    >
+      <IonContent class="ion-padding">
+        <IonToolbar>
+          <div>
+            <div
+              value="en"
+              class="segment-button"
+            >
+              EN
+            </div>
+            <div
+              value="uk"
+              class="segment-button"
+            >
+              UA
+            </div>
+          </div>
+        </IonToolbar>
+      </IonContent>
+    </IonMenu>
+
+    <IonHeader>
+      <IonToolbar>
+        <IonButtons slot="end">
+          <IonMenuButton></IonMenuButton>
+        </IonButtons>
+      </IonToolbar>
+    </IonHeader>
+
     <IonProgressBar
       v-if="isPending"
       type="indeterminate"
     />
-    <IonContent class="ion-padding">
-      <div class="profile-page">
-        <IonIcon
-          color="dark"
-          :icon="logOutOutline"
-          class="profile-page__logout-button"
-          @click="onLogout"
-        />
-
-        <div @click="fileInputRef?.click()">
-          <IonSkeletonText
-            v-if="isPending"
-            animated
-            class="profile-page__avatar"
-            style="border-radius: 50%"
-          />
-          <IonAvatar
-            v-else-if="userData?.avatar"
-            class="profile-page__avatar"
-          >
-            <img :src="getImageUrl(userData.avatar)" />
-          </IonAvatar>
+    <IonContent>
+      <div id="main-content">
+        <div class="profile-page">
           <IonIcon
-            v-else
-            class="profile-page__avatar profile-page__avatar--placeholder"
-            color="medium"
-            :icon="person"
+            color="dark"
+            :icon="logOutOutline"
+            class="profile-page__logout-button"
+            @click="onLogout"
           />
-          <input
-            ref="fileInputRef"
-            type="file"
-            accept="image/*"
-            style="display: none"
-            @change="onPhotoChange"
-          />
+
+          <div @click="fileInputRef?.click()">
+            <IonSkeletonText
+              v-if="isPending"
+              animated
+              class="profile-page__avatar"
+            />
+            <IonImg
+              v-else-if="userData?.avatar"
+              class="profile-page__avatar"
+              :src="getImageUrl(userData.avatar)"
+            />
+            <IonIcon
+              v-else
+              class="profile-page__avatar profile-page__avatar--placeholder"
+              color="medium"
+              :icon="person"
+            />
+            <input
+              ref="fileInputRef"
+              type="file"
+              accept="image/*"
+              style="display: none"
+              @change="onPhotoChange"
+            />
+          </div>
+
+          <IonText color="dark">
+            <IonSkeletonText
+              v-if="isPending"
+              animated
+              style="min-width: 100px"
+            />
+            <b v-else>
+              {{ userData?.username }}
+            </b>
+          </IonText>
+
+          <IonText color="dark">
+            <IonSkeletonText
+              v-if="isPending"
+              animated
+              style="min-width: 100px"
+            />
+            <span v-else>
+              {{ userData?.description }}
+            </span>
+          </IonText>
         </div>
-
-        <IonText color="dark">
-          <IonSkeletonText
-            v-if="isPending"
-            animated
-            style="min-width: 100px"
-          />
-          <b v-else>
-            {{ userData?.username }}
-          </b>
-        </IonText>
-
-        <IonText color="dark">
-          <IonSkeletonText
-            v-if="isPending"
-            animated
-            style="min-width: 100px"
-          />
-          <span v-else>
-            {{ userData?.description }}
-          </span>
-        </IonText>
       </div>
     </IonContent>
   </IonPage>
@@ -76,8 +108,17 @@ import {
   IonIcon,
   IonText,
   IonSkeletonText,
-  IonAvatar,
-  onIonViewWillEnter
+  onIonViewWillEnter,
+  IonImg,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonMenuButton,
+  IonTitle,
+  IonMenu,
+  IonSegment,
+  IonSegmentButton,
+  IonLabel
 } from "@ionic/vue"
 import { ref } from "vue"
 import { nextTick } from "vue"
@@ -144,10 +185,9 @@ onIonViewWillEnter(() => nextTick(getUserData))
   gap: 16px;
 
   &__avatar {
-    border: 2px solid red;
-    width: 128px;
-    height: 128px;
-    border-radius: 50%;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
 
     display: flex;
     justify-content: center;
@@ -161,9 +201,17 @@ onIonViewWillEnter(() => nextTick(getUserData))
 
     &--placeholder {
       padding: 24px;
-      width: 76px;
-      height: 76px;
       margin: 0;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(0deg, var(--background) 0%, transparent 50%);
     }
   }
 
@@ -173,5 +221,8 @@ onIonViewWillEnter(() => nextTick(getUserData))
     right: 16px;
     font-size: 32px;
   }
+}
+
+.segment-button {
 }
 </style>

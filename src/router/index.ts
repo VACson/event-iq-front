@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "@ionic/vue-router"
+import { createRouter, createMemoryHistory } from "@ionic/vue-router"
 import { NavigationGuardNext, RouteRecordRaw } from "vue-router"
 import MainView from "../views/MainView.vue"
 import WelcomeView from "../views/WelcomeView.vue"
@@ -48,7 +48,7 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHistory("/"),
+  history: createMemoryHistory(),
   routes
 })
 
