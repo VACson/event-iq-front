@@ -37,8 +37,10 @@ addIcons({
 const app = createApp(App)
 app.use(IonicVue)
 app.use(router)
-
 app.use(i18n)
+
+app.config.globalProperties.i18n = i18n
+app.provide("i18n", i18n)
 
 router.isReady().then(() => {
   app.mount("#app")

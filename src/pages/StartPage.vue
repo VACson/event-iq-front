@@ -11,25 +11,20 @@
 
         <IonRow class="login-buttons">
           <IonCol>
-            <IonButton
-              size="large"
-              color="light"
-              expand="block"
+            <BaseButton
+              className="light"
               @click="onLoginClick()"
             >
               {{ $t("auth.login") }}
-            </IonButton>
+            </BaseButton>
           </IonCol>
           <IonCol>
-            <IonButton
-              size="large"
-              fill="outline"
-              color="light"
-              expand="block"
+            <BaseButton
+              className="outline"
               @click="onRegisterClick()"
             >
               {{ $t("auth.signup") }}
-            </IonButton>
+            </BaseButton>
           </IonCol>
         </IonRow>
       </IonGrid>
@@ -39,6 +34,8 @@
 
 <script setup lang="ts">
 import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonButton, useIonRouter } from "@ionic/vue"
+
+import { BaseInput, BaseButton, BaseForm } from "../components/Base/"
 
 const router = useIonRouter()
 

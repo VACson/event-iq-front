@@ -7,14 +7,12 @@
       >
         <IonRefresherContent />
       </IonRefresher>
-      <!-- 
-      <IonButton @click="onCreateActivity()">{{ $t("activities.createNew") }}</IonButton> -->
 
       <div class="categories-tiles">
         <EventCategoryPreview
           v-for="event in fetchedActivities"
-          :icon="event.activity_type"
-          :key="event.activity_id"
+          :key="event.activity_uuid"
+          :event="event"
           class="categories-tiles__item"
         />
       </div>
@@ -23,21 +21,16 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, inject, onMounted, ref } from "vue"
+import { ref, onMounted } from "vue"
 import {
   IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
   IonRefresher,
   IonRefresherContent,
-  IonButton,
-  useIonRouter,
   onIonViewDidEnter
 } from "@ionic/vue"
 import EventCategoryPreview from "../components/EventCategoryPreview.vue"
-import { Activity, createNewActivity, fetchActivities } from "../api/activities"
+import { Activity, fetchActivities } from "../api/activities"
 
 interface RefresherEventDetail {
   complete(): void
@@ -48,24 +41,14 @@ interface RefresherCustomEvent extends CustomEvent {
 }
 
 const fetchedActivities = ref<Array<Activity>>([])
-// const icons = ["heart", "accessibility", "airplane", "bag", "basketball", "brush"]
 
 const handleRefresh = (event: RefresherCustomEvent) => {
-  // Any calls to load data go here
   try {
     getActivities()
     event.target.complete()
   } catch (e) {
     alert(e)
   }
-}
-
-const onCreateActivity = async () => {
-  const { data } = await createNewActivity({
-    activity_name: "airplane",
-    activity_participants: 1,
-    activity_type: "airplane"
-  })
 }
 
 const getActivities = async () => {
@@ -77,9 +60,8 @@ const getActivities = async () => {
   }
 }
 
-onIonViewDidEnter(() => {
-  getActivities()
-})
+onMounted(getActivities)
+onIonViewDidEnter(getActivities)
 </script>
 
 <style scoped lang="scss">

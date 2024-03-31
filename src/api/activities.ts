@@ -1,16 +1,16 @@
 import { API } from "@/utils/http"
 
 export type Activity = {
-  activity_id?: number
+  activity_uuid?: number
   activity_name: string
-  activity_duration?: number
-  activity_location?: string
-  activity_type?: string
+  activity_creator?: string
+  activity_duration?: string
+  activity_category?: string
   activity_participants?: number
-  activity_rating?: number
   activity_notes?: string
-  activity_date?: string
-  activity_cost?: number
+  activity_placement?: string
+  activity_views?: string
+  activity_images?: Array<string>
 }
 
 type ServiceParams = {

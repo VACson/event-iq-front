@@ -6,14 +6,15 @@ export default {
     login_title: "Log in to your account",
     register_title: "Register new account"
   },
-  activities: {
-    createNew: "Create new activity"
-  },
   discover: {
     title: "Discover"
   },
   create_page: {
-    title: "Create new"
+    title: "Create new",
+    activity_category: "Activity category",
+    activity_name: "Activity name",
+    activity_participants: "Activity participants",
+    create_new: "Create new activity"
   },
   profile: {
     title: "Profile"

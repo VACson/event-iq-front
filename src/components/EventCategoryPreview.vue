@@ -1,34 +1,24 @@
 <template>
   <IonCard>
     <IonCardHeader>
-      <IonCardTitle>Title</IonCardTitle>
+      <IonCardTitle>{{ props.event?.activity_name }}</IonCardTitle>
     </IonCardHeader>
     <IonCardContent>
       <IonButton
         ariaLabel="Favorite"
         class="event-icon"
       >
-        <IonIcon
-          :name="props.icon"
-          ariaHidden
-        />
       </IonButton>
     </IonCardContent>
   </IonCard>
 </template>
 
 <script setup lang="ts">
-import {
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonIcon,
-  IonButton
-} from "@ionic/vue"
+import { Activity } from "@/api/activities"
+import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonButton } from "@ionic/vue"
 
 type Props = {
-  icon?: string
+  event?: Activity
 }
 
 const props = defineProps<Props>()

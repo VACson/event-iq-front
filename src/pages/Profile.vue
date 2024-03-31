@@ -5,32 +5,31 @@
       side="end"
     >
       <IonContent class="ion-padding">
-        <IonToolbar>
-          <div>
-            <div
-              value="en"
-              class="segment-button"
-            >
-              EN
-            </div>
-            <div
-              value="uk"
-              class="segment-button"
-            >
-              UA
-            </div>
+        <div class="lang-switcher">
+          <div
+            class="lang-switcher__item"
+            :class="{ 'lang-switcher__item--active': $i18n.locale === 'en' }"
+            @click="() => ($i18n.locale = 'en')"
+          >
+            EN
           </div>
-        </IonToolbar>
+          <div
+            class="lang-switcher__item"
+            :class="{ 'lang-switcher__item--active': $i18n.locale === 'uk' }"
+            @click="() => ($i18n.locale = 'uk')"
+          >
+            UA
+          </div>
+        </div>
+
+        <IonIcon
+          color="dark"
+          :icon="logOutOutline"
+          class="profile-page__logout-button"
+          @click.stop="onLogout"
+        />
       </IonContent>
     </IonMenu>
-
-    <IonHeader>
-      <IonToolbar>
-        <IonButtons slot="end">
-          <IonMenuButton></IonMenuButton>
-        </IonButtons>
-      </IonToolbar>
-    </IonHeader>
 
     <IonProgressBar
       v-if="isPending"
@@ -39,13 +38,6 @@
     <IonContent>
       <div id="main-content">
         <div class="profile-page">
-          <IonIcon
-            color="dark"
-            :icon="logOutOutline"
-            class="profile-page__logout-button"
-            @click="onLogout"
-          />
-
           <div @click="fileInputRef?.click()">
             <IonSkeletonText
               v-if="isPending"
@@ -71,6 +63,7 @@
               @change="onPhotoChange"
             />
           </div>
+          <IonMenuButton class="menu-button"></IonMenuButton>
 
           <IonText color="dark">
             <IonSkeletonText
@@ -110,23 +103,17 @@ import {
   IonSkeletonText,
   onIonViewWillEnter,
   IonImg,
-  IonHeader,
-  IonToolbar,
-  IonButtons,
   IonMenuButton,
-  IonTitle,
-  IonMenu,
-  IonSegment,
-  IonSegmentButton,
-  IonLabel
+  IonMenu
 } from "@ionic/vue"
-import { ref } from "vue"
+import { inject, ref } from "vue"
 import { nextTick } from "vue"
 import { logOutOutline, person } from "ionicons/icons"
 import { User, getUserFromStorage, removeUserFromStorage, saveUserToStorage } from "@/utils/auth"
 import { imagesUrl } from "../utils/http"
 import { onMounted } from "vue"
 import { updateProfilePhoto } from "../api/users"
+import { i18n } from "../locales/utils"
 
 const fileInputRef = ref<HTMLInputElement>()
 
@@ -172,6 +159,10 @@ const getImageUrl = (image: string): string => {
   return `${imagesUrl}/${image}`
 }
 
+const changeLang = () => {
+  console.log(i18n)
+}
+
 onMounted(() => nextTick(getUserData))
 onIonViewWillEnter(() => nextTick(getUserData))
 </script>
@@ -186,8 +177,8 @@ onIonViewWillEnter(() => nextTick(getUserData))
 
   &__avatar {
     position: relative;
-    width: 100%;
-    aspect-ratio: 1;
+    width: 100dvw;
+    height: 100dvw;
 
     display: flex;
     justify-content: center;
@@ -207,10 +198,10 @@ onIonViewWillEnter(() => nextTick(getUserData))
     &::after {
       content: "";
       position: absolute;
-      top: 0;
+      bottom: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100dvw;
+      height: 100dvw;
       background: linear-gradient(0deg, var(--background) 0%, transparent 50%);
     }
   }
@@ -223,6 +214,24 @@ onIonViewWillEnter(() => nextTick(getUserData))
   }
 }
 
-.segment-button {
+.lang-switcher {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 8px;
+
+  &__item {
+    color: var(--ion-color-dark);
+    transition: color 0.3s;
+
+    &--active {
+      color: var(--ion-color-primary);
+    }
+  }
+}
+
+.menu-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
 }
 </style>

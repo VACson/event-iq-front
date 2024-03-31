@@ -12,8 +12,8 @@
         </IonTabButton>
 
         <IonTabButton
-          tab="radio"
-          path="/create"
+          tab="create"
+          href="/create"
         >
           <IonIcon :icon="add" />
           <IonLabel>{{ $t("create_page.title") }}</IonLabel>
