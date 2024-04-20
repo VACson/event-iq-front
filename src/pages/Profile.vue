@@ -1,6 +1,7 @@
 <template>
   <IonPage>
     <IonMenu
+      ref="menuRef"
       contentId="main-content"
       side="end"
     >
@@ -28,6 +29,12 @@
           class="profile-page__logout-button"
           @click.stop="onLogout"
         />
+
+        <IonList>
+          <div @click="onSettingsClick">
+            {{ $t("profile.settings") }}
+          </div>
+        </IonList>
       </IonContent>
     </IonMenu>
 
@@ -38,7 +45,7 @@
     <IonContent>
       <div id="main-content">
         <div class="profile-page">
-          <div @click="fileInputRef?.click()">
+          <div>
             <IonSkeletonText
               v-if="isPending"
               animated
@@ -54,13 +61,6 @@
               class="profile-page__avatar profile-page__avatar--placeholder"
               color="medium"
               :icon="person"
-            />
-            <input
-              ref="fileInputRef"
-              type="file"
-              accept="image/*"
-              style="display: none"
-              @change="onPhotoChange"
             />
           </div>
           <IonMenuButton class="menu-button"></IonMenuButton>
@@ -104,18 +104,18 @@ import {
   onIonViewWillEnter,
   IonImg,
   IonMenuButton,
-  IonMenu
+  IonMenu,
+  IonList
 } from "@ionic/vue"
-import { inject, ref } from "vue"
+import { menuController } from "@ionic/vue"
+import { ref } from "vue"
 import { nextTick } from "vue"
 import { logOutOutline, person } from "ionicons/icons"
 import { User, getUserFromStorage, removeUserFromStorage, saveUserToStorage } from "@/utils/auth"
 import { imagesUrl } from "../utils/http"
 import { onMounted } from "vue"
-import { updateProfilePhoto } from "../api/users"
-import { i18n } from "../locales/utils"
 
-const fileInputRef = ref<HTMLInputElement>()
+const menuRef = ref<HTMLIonMenuElement>()
 
 const userData = ref<User>()
 const router = useIonRouter()
@@ -139,28 +139,22 @@ const getUserData = async (firstFetch: boolean = true) => {
 
 const onLogout = () => {
   removeUserFromStorage()
+  onMenuClose()
   router.push({ name: "Welcome" })
-}
-
-const onPhotoChange = async (e: Event) => {
-  const { files } = e.target as HTMLInputElement
-  if (!files?.length) return
-
-  const payload = new FormData()
-  payload.append("file", files[0])
-
-  const { data } = await updateProfilePhoto({ payload })
-
-  saveUserToStorage({ ...userData.value, ...data })
-  userData.value = data
 }
 
 const getImageUrl = (image: string): string => {
   return `${imagesUrl}/${image}`
 }
 
-const changeLang = () => {
-  console.log(i18n)
+const onSettingsClick = () => {
+  onMenuClose()
+
+  router.push({ name: "Settings" })
+}
+
+const onMenuClose = () => {
+  menuController.close()
 }
 
 onMounted(() => nextTick(getUserData))
@@ -187,7 +181,7 @@ onIonViewWillEnter(() => nextTick(getUserData))
     & img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
     }
 
     &--placeholder {
@@ -218,6 +212,8 @@ onIonViewWillEnter(() => nextTick(getUserData))
   display: flex;
   flex-flow: row nowrap;
   gap: 8px;
+
+  margin-top: 16px;
 
   &__item {
     color: var(--ion-color-dark);

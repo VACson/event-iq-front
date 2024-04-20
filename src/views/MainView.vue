@@ -20,6 +20,14 @@
         </IonTabButton>
 
         <IonTabButton
+          tab="teams"
+          href="/teams"
+        >
+          <IonIcon :icon="people" />
+          <IonLabel>{{ $t("teams.title") }}</IonLabel>
+        </IonTabButton>
+
+        <IonTabButton
           tab="profile"
           href="/profile"
         >
@@ -40,5 +48,5 @@ import {
   IonPage,
   IonRouterOutlet
 } from "@ionic/vue"
-import { add, person, planetOutline } from "ionicons/icons"
+import { add, person, planetOutline, people } from "ionicons/icons"
 </script>

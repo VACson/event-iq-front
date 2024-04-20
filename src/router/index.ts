@@ -47,6 +47,17 @@ const routes: Array<RouteRecordRaw> = [
         path: "profile",
         name: "Profile",
         component: () => import("../pages/Profile.vue")
+      },
+
+      {
+        path: "teams",
+        name: "Teams",
+        component: () => import("../pages/Teams.vue")
+      },
+      {
+        path: "settings",
+        name: "Settings",
+        component: () => import("../pages/Settings.vue")
       }
     ]
   }
