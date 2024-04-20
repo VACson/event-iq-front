@@ -1,4 +1,7 @@
 export default {
+  common: {
+    search: "Search"
+  },
   auth: {
     acti: "Acti",
     login: "Login",
@@ -18,5 +21,8 @@ export default {
   },
   profile: {
     title: "Profile"
+  },
+  teams: {
+    title: "Teams"
   }
 }

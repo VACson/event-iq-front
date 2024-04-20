@@ -1,3 +1,4 @@
+import getRequestQueryParams from "@/utils/get-request-query-params"
 import { API } from "@/utils/http"
 
 export type Team = {
@@ -16,5 +17,6 @@ export const createNewTeam = (team: Team) => {
 }
 
 export const fetchTeams = ({ queryParams }: ServiceParams) => {
-  return API.get("/teams")
+  const query = getRequestQueryParams(queryParams)
+  return API.get("/teams" + query)
 }

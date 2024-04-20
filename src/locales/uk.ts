@@ -1,4 +1,7 @@
 export default {
+  common: {
+    search: "Пошук"
+  },
   auth: {
     login: "Увійти",
     signup: "Зареєструватися",
@@ -18,5 +21,8 @@ export default {
   },
   profile: {
     title: "Профіль"
+  },
+  teams: {
+    title: "Тіми"
   }
 }
