@@ -12,12 +12,11 @@
       />
 
       <div class="teams-list">
-        <div
+        <TeamCard
           v-for="team in dataSource"
           :key="team.uuid"
-        >
-          {{ team }}
-        </div>
+          :team="team"
+        />
       </div>
 
       <IonInfiniteScroll @ionInfinite="ionInfinite">
@@ -30,6 +29,7 @@
 <script setup lang="ts">
 import { Team, fetchTeams } from "@/api/teams"
 import { BaseInputSearch } from "@/components/Base"
+import TeamCard from "@/components/TeamCard.vue"
 import {
   InfiniteScrollCustomEvent,
   IonContent,
@@ -79,3 +79,15 @@ const ionInfinite = (ev: InfiniteScrollCustomEvent) => {
 }
 onIonViewDidEnter(getInitialTeams)
 </script>
+
+<style lang="scss" scoped>
+.teams-list {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 16px;
+
+  width: 100%;
+
+  margin-top: 16px;
+}
+</style>

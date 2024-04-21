@@ -1,11 +1,13 @@
+import { User } from "@/utils/auth"
 import getRequestQueryParams from "@/utils/get-request-query-params"
 import { API } from "@/utils/http"
 
 export type Team = {
-  uuid: string
+  uuid?: string
   name: string
   description?: string
   avatar?: string
+  creator?: User
 }
 
 type ServiceParams = {

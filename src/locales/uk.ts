@@ -20,9 +20,14 @@ export default {
     create_new: "Створити нову активність"
   },
   profile: {
-    title: "Профіль"
+    title: "Профіль",
+    settings: "Налаштування профілю"
   },
   teams: {
-    title: "Тіми"
+    title: "Тіми",
+    create_team: "Створити тіму"
+  },
+  settings: {
+    change_photo: "Змінити свій аватар"
   }
 }

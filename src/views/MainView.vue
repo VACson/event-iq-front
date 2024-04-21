@@ -13,7 +13,7 @@
 
         <IonTabButton
           tab="create"
-          href="/create"
+          href="/create_activity"
         >
           <IonIcon :icon="add" />
           <IonLabel>{{ $t("create_page.title") }}</IonLabel>

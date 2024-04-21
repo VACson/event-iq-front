@@ -39,7 +39,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../pages/Discover.vue")
       },
       {
-        path: "create",
+        path: "create_activity",
         name: "Create",
         component: () => import("../pages/CreateActivity.vue")
       },
@@ -48,11 +48,15 @@ const routes: Array<RouteRecordRaw> = [
         name: "Profile",
         component: () => import("../pages/Profile.vue")
       },
-
       {
         path: "teams",
         name: "Teams",
         component: () => import("../pages/Teams.vue")
+      },
+      {
+        path: "create_team",
+        name: "TeamCreation",
+        component: () => import("../pages/TeamCreation.vue")
       },
       {
         path: "settings",
