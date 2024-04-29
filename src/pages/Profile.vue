@@ -38,20 +38,17 @@
       </IonContent>
     </IonMenu>
 
-    <IonProgressBar
-      v-if="isPending"
-      type="indeterminate"
-    />
     <IonContent>
       <div id="main-content">
         <div class="profile-page">
+          <IonMenuButton class="menu-button"></IonMenuButton>
           <div>
             <IonSkeletonText
               v-if="isPending"
               animated
               class="profile-page__avatar"
             />
-            <IonImg
+            <img
               v-else-if="userData?.avatar"
               class="profile-page__avatar"
               :src="getImageUrl(userData.avatar)"
@@ -63,29 +60,32 @@
               :icon="person"
             />
           </div>
-          <IonMenuButton class="menu-button"></IonMenuButton>
 
-          <IonText color="dark">
-            <IonSkeletonText
-              v-if="isPending"
-              animated
-              style="min-width: 100px"
-            />
-            <b v-else>
-              {{ userData?.username }}
-            </b>
-          </IonText>
+          <div class="profile-info">
+            <div class="profile-info__name">
+              <div>@{{ userData?.username }}</div>
+              <!-- <IonText color="medium"> {{ userData?.location }} </IonText> -->
+            </div>
 
-          <IonText color="dark">
-            <IonSkeletonText
-              v-if="isPending"
-              animated
-              style="min-width: 100px"
-            />
-            <span v-else>
-              {{ userData?.description }}
-            </span>
-          </IonText>
+            <IonText color="medium"> {{ userData?.description }} </IonText>
+
+            <div class="counters">
+              <div class="info-counter">
+                <div>{{ userData?.joined_activities?.length || 0 }}</div>
+                <IonText color="medium"> {{ $t("activities.joined_activities") }} </IonText>
+              </div>
+
+              <div class="info-counter">
+                <div>{{ userData?.created_activities?.length || 0 }}</div>
+                <IonText color="medium"> {{ $t("activities.created_activities") }} </IonText>
+              </div>
+
+              <div class="info-counter">
+                <div>{{ userData?.joined_teams?.length || 0 }}</div>
+                <IonText color="medium"> {{ $t("teams.joined_teams") }} </IonText>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </IonContent>
@@ -114,6 +114,7 @@ import { logOutOutline, person } from "ionicons/icons"
 import { User, getUserFromStorage, removeUserFromStorage, saveUserToStorage } from "@/utils/auth"
 import { imagesUrl } from "../utils/http"
 import { onMounted } from "vue"
+import { getProfile } from "@/api/users"
 
 const menuRef = ref<HTMLIonMenuElement>()
 
@@ -125,7 +126,9 @@ const isPending = ref<boolean>(true)
 const getUserData = async (firstFetch: boolean = true) => {
   try {
     const userInfo = await getUserFromStorage()
-    userData.value = userInfo
+    const me = await getProfile()
+
+    userData.value = { ...userInfo, ...me }
     isPending.value = false
   } catch (error: any) {
     if (error?.response?.status !== 401 || !firstFetch) {
@@ -166,17 +169,17 @@ onIonViewWillEnter(() => nextTick(getUserData))
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
-  align-items: center;
   gap: 16px;
 
   &__avatar {
     position: relative;
     width: 100dvw;
-    height: 100dvw;
+    aspect-ratio: 1;
 
     display: flex;
     justify-content: center;
     align-items: center;
+    object-fit: cover;
 
     & img {
       width: 100%;
@@ -187,16 +190,6 @@ onIonViewWillEnter(() => nextTick(getUserData))
     &--placeholder {
       padding: 24px;
       margin: 0;
-    }
-
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100dvw;
-      height: 100dvw;
-      background: linear-gradient(0deg, var(--background) 0%, transparent 50%);
     }
   }
 
@@ -229,5 +222,30 @@ onIonViewWillEnter(() => nextTick(getUserData))
   position: absolute;
   top: 16px;
   right: 16px;
+  z-index: 6;
+}
+
+.profile-info {
+  padding: 12px;
+
+  &__name {
+    font-size: 24px;
+  }
+}
+
+.counters {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  margin-bottom: 12px;
+
+  & > * {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+
+    max-width: 100px;
+    text-align: center;
+  }
 }
 </style>

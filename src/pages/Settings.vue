@@ -17,7 +17,7 @@
           class="settings__list__item"
           @click="onCreateTeamClick"
         >
-          {{ $t("teams.create_team") }}
+          {{ $t("teams.create_new") }}
         </div>
       </div>
 
@@ -85,11 +85,13 @@ const onCreateTeamClick = () => {
       &:hover,
       &:focus-within {
         background-color: var(--ion-color-medium-tint);
+        color: var(--ion-color-medium-contrast);
       }
 
       &:active {
         background-color: var(--ion-color-medium);
         box-shadow: 0 2px 10px var(--ion-color-medium-tint);
+        color: var(--ion-color-medium-contrast);
       }
     }
   }

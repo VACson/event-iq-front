@@ -6,6 +6,9 @@ export type User = {
   avatar?: string
   description?: string
   token?: string
+  joined_teams?: any[]
+  joined_activities?: any[]
+  created_activities?: any[]
 }
 
 export const saveUserToStorage = async (payload: User) => {

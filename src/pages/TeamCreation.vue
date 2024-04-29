@@ -14,6 +14,18 @@
           :placeholder="$t('teams.description')"
         />
 
+        <BaseButton @click="onChooseImage">
+          {{ $t("create_page.activity_avatar") }}
+        </BaseButton>
+
+        <input
+          ref="photoInputRef"
+          type="file"
+          accept="image/*"
+          style="display: none"
+          @change="onPhotoChange"
+        />
+
         <BaseButton
           className="dark"
           @click="onSubmit"
@@ -26,15 +38,29 @@
 </template>
 
 <script setup lang="ts">
-import { createNewTeam } from "@/api/teams"
+import { Team, createNewTeam } from "@/api/teams"
 import { BaseButton, BaseForm, BaseInput, BasePageTitle } from "@/components/Base"
 import { IonContent, IonPage } from "@ionic/vue"
-import { reactive } from "vue"
+import { reactive, ref } from "vue"
 
-const form = reactive({
+const photoInputRef = ref()
+
+const form = reactive<Team>({
   name: "",
-  description: ""
+  description: "",
+  avatar: undefined
 })
+
+const onChooseImage = () => {
+  photoInputRef.value.click()
+}
+
+const onPhotoChange = (e: Event) => {
+  const { files } = e.target as HTMLInputElement
+  if (!files) return
+
+  form.avatar = files[0]
+}
 
 const onSubmit = () => {
   createNewTeam(form)

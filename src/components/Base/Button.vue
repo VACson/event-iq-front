@@ -57,7 +57,7 @@ const getPropsClass = () => {
   background: transparent;
   background-color: transparent;
   outline: none;
-  border: 2px solid var(--ion-color-dark);
+  border: 1px solid var(--ion-color-dark);
 
   border-radius: 5px;
   padding: 4px 16px;
@@ -79,19 +79,19 @@ const getPropsClass = () => {
   &--dark {
     background-color: var(--ion-color-dark);
     color: var(--ion-color-light);
-    border: 2px solid var(--ion-color-dark);
+    border: 1px solid var(--ion-color-dark);
   }
 
   &--light {
     background-color: var(--ion-color-light);
     color: var(--ion-color-dark);
-    border: 2px solid var(--ion-color-light);
+    border: 1px solid var(--ion-color-light);
   }
 
   &--outline {
     background-color: var(--ion-color-dark);
     color: var(--ion-color-light);
-    border: 2px solid var(--ion-color-light);
+    border: 1px solid var(--ion-color-light);
   }
 }
 </style>

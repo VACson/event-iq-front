@@ -6,7 +6,7 @@ export type Team = {
   uuid?: string
   name: string
   description?: string
-  avatar?: string
+  avatar?: string | File
   creator?: User
 }
 
@@ -21,4 +21,8 @@ export const createNewTeam = (team: Team) => {
 export const fetchTeams = ({ queryParams }: ServiceParams) => {
   const query = getRequestQueryParams(queryParams)
   return API.get("/teams" + query)
+}
+
+export const joinTeam = ({ uuid }: { uuid: string }) => {
+  return API.patch(`/teams/${uuid}/join`)
 }
