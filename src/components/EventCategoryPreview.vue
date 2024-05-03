@@ -65,6 +65,8 @@ const getImageUrl = (image: string): string => {
 }
 
 const handleJoinActivity = async () => {
+  if (isJoinedToEvent.value) return
+
   try {
     await joinActivity({ uuid: props.event.uuid })
     isJoinedToEvent.value = true
@@ -81,7 +83,7 @@ onMounted(async () => {
     return
   }
 
-  if (props.event.members?.some((uuid) => uuid === user?.uuid)) {
+  if (props.event.members?.some(({ uuid }) => uuid === user?.uuid)) {
     isJoinedToEvent.value = true
   }
 })
