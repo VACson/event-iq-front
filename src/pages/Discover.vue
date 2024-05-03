@@ -11,7 +11,7 @@
       <div class="categories-tiles">
         <EventCategoryPreview
           v-for="event in fetchedActivities"
-          :key="event.activity_uuid"
+          :key="event.uuid"
           :event="event"
           class="categories-tiles__item"
         />
