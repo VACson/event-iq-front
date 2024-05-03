@@ -5,11 +5,11 @@
         {{ $t("teams.title") }}
       </IonTitle>
 
-      <BaseInputSearch
+      <!-- <BaseInputSearch
         v-model="form.search"
         :placeholder="$t('common.search')"
         @search="onTeamsSearch"
-      />
+      /> -->
 
       <div class="teams-list">
         <TeamCard

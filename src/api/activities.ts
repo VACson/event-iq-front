@@ -2,16 +2,15 @@ import { User } from "@/utils/auth"
 import { API } from "@/utils/http"
 
 export type Activity = {
-  activity_uuid?: number
-  activity_name: string
-  activity_creator?: User
-  activity_participants?: number
-  activity_notes?: string
-  activity_placement?: string
-  activity_views?: string
-  activity_images?: Array<string>
-  activity_date?: string
-  activity_avatar?: string | File
+  uuid?: string
+  name: string
+  creator?: User
+  members?: Array<User>
+  description?: string
+  location?: string
+  views?: string
+  image?: string | File
+  date?: string
 }
 
 type ServiceParams = {
@@ -28,4 +27,8 @@ export const fetchActivities = ({ queryParams }: ServiceParams) => {
 
 export const updateActivity = (uuid: string, activity: Partial<Activity>) => {
   return API.patch(`/activities/${uuid}`, activity)
+}
+
+export const joinActivity = ({ uuid }: { uuid?: string }) => {
+  return API.patch(`/activities/${uuid}/join`)
 }

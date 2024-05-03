@@ -5,22 +5,22 @@
       <BaseForm>
         <BaseInput
           :placeholder="$t('create_page.activity_name')"
-          v-model="form.activity_name"
+          v-model="form.name"
         />
 
         <BaseInput
           :placeholder="$t('create_page.activity_placement')"
-          v-model="form.activity_placement"
+          v-model="form.location"
         />
 
         <BaseInput
           :placeholder="$t('create_page.activity_date')"
-          v-model="form.activity_date"
+          v-model="form.date"
         />
 
         <BaseInput
           :placeholder="$t('create_page.activity_notes')"
-          v-model="form.activity_notes"
+          v-model="form.description"
         />
 
         <BaseButton @click="onChooseImage">
@@ -59,11 +59,11 @@ const router = useIonRouter()
 const photoInputRef = ref()
 
 const form = reactive<Activity>({
-  activity_name: "",
-  activity_placement: "",
-  activity_date: "",
-  activity_notes: "",
-  activity_avatar: undefined
+  name: "",
+  location: "",
+  date: "",
+  description: "",
+  image: undefined
 })
 
 const isFetching = ref(false)
@@ -72,14 +72,13 @@ const onCreateActivity = async () => {
   try {
     isFetching.value = true
 
-    const { activity_avatar, ...payload } = form
+    const { image, ...payload } = form
     const activityResponse = await createNewActivity(payload)
 
-    if (activity_avatar) {
-      const { data } = await uploadNewImage(activity_avatar as File)
-      console.log(data)
+    if (image && activityResponse.data.uuid) {
+      const { data } = await uploadNewImage(image as File)
 
-      await updateActivity(activityResponse.data.activity_uuid, { activity_avatar: data.filename })
+      await updateActivity(activityResponse.data.uuid, { image: data.filename })
     }
 
     resetForm()
@@ -90,7 +89,7 @@ const onCreateActivity = async () => {
 }
 
 const resetForm = () => {
-  form.activity_name = ""
+  form.name = ""
 }
 
 const onChooseImage = () => {
@@ -101,7 +100,7 @@ const onPhotoChange = (e: Event) => {
   const { files } = e.target as HTMLInputElement
   if (!files) return
 
-  form.activity_avatar = files[0]
+  form.image = files[0]
 }
 </script>
 

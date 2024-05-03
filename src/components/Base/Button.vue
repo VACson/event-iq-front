@@ -1,7 +1,8 @@
 <template>
   <button
+    v-if="!isPending"
     class="base-button"
-    :class="getPropsClass()"
+    :class="buttonClass"
     @click="emit('click')"
   >
     <IonSpinner
@@ -14,6 +15,7 @@
 
 <script setup lang="ts">
 import { IonSpinner } from "@ionic/vue"
+import { computed, nextTick, ref, watch } from "vue"
 
 type Props = {
   disabled?: boolean
@@ -29,6 +31,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits(["click"])
 
+const isPending = ref<boolean>(false)
+
 const classes = {
   disabled: "base-button--disabled",
   danger: "base-button--danger",
@@ -38,10 +42,10 @@ const classes = {
   default: "base-button--default"
 }
 
-const getPropsClass = () => {
-  if (props.className === "default") return ""
-  return classes[props.className]
-}
+const buttonClass = computed(() => {
+  if (props.className === "default") return "base-button"
+  return `base-button ${classes[props.className]}`
+})
 </script>
 
 <style scoped lang="scss">

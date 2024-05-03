@@ -76,7 +76,7 @@
               </div>
 
               <div class="info-counter">
-                <div>{{ userData?.created_activities?.length || 0 }}</div>
+                <div>{{ userData?.created_events?.length }}</div>
                 <IonText color="medium"> {{ $t("activities.created_activities") }} </IonText>
               </div>
 
@@ -126,9 +126,9 @@ const isPending = ref<boolean>(true)
 const getUserData = async (firstFetch: boolean = true) => {
   try {
     const userInfo = await getUserFromStorage()
-    const me = await getProfile()
+    const { data } = await getProfile()
 
-    userData.value = { ...userInfo, ...me }
+    userData.value = { ...userInfo, ...data }
     isPending.value = false
   } catch (error: any) {
     if (error?.response?.status !== 401 || !firstFetch) {

@@ -2,30 +2,34 @@
   <div class="card-container">
     <div class="event-header">
       <img
-        v-if="props.event?.activity_creator?.avatar"
-        :src="getImageUrl(props.event.activity_creator.avatar)"
+        v-if="props.event?.creator?.avatar"
+        :src="getImageUrl(props.event.creator.avatar)"
         class="creator-avatar"
       />
 
       <div>
-        {{ props.event?.activity_creator?.username }}
+        {{ props.event?.creator?.username }}
+      </div>
+
+      <div>
+        {{ props.event.date }}
       </div>
     </div>
 
     <img
-      v-if="props.event?.activity_images?.length"
-      :src="getImageUrl(props.event.activity_images[0])"
+      v-if="props.event?.image"
+      :src="getImageUrl(props.event.image as string)"
       class="card-image"
     />
 
     <div class="card-footer">
       <div class="card-footer__main">
-        <div class="card-footer__name">{{ props.event.activity_name }}</div>
-        <div class="card-footer__location"></div>
+        <div class="card-footer__name">{{ props.event.name }}</div>
+        <div class="card-footer__location">{{ props.event.location }}</div>
       </div>
 
       <BaseButton
-        className="dark"
+        :className="isJoinedToEvent ? 'light' : 'dark'"
         style="
           width: fit-content;
           height: fit-content;
@@ -33,18 +37,20 @@
           text-transform: unset;
           font-size: 12px;
         "
+        @click="handleJoinActivity"
       >
-        Join
+        {{ isJoinedToEvent ? "Joined" : "Join" }}
       </BaseButton>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Activity } from "@/api/activities"
+import { Activity, joinActivity } from "@/api/activities"
 import { imagesUrl } from "@/utils/http"
-import { onMounted } from "vue"
+import { onMounted, ref } from "vue"
 import { BaseButton } from "./Base"
+import { getUserFromStorage } from "@/utils/auth"
 
 type Props = {
   event: Activity
@@ -52,12 +58,32 @@ type Props = {
 
 const props = defineProps<Props>()
 
+const isJoinedToEvent = ref<Boolean>(false)
+
 const getImageUrl = (image: string): string => {
   return `${imagesUrl}/${image}`
 }
 
-onMounted(() => {
-  console.log(props.event)
+const handleJoinActivity = async () => {
+  try {
+    await joinActivity({ uuid: props.event.uuid })
+    isJoinedToEvent.value = true
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+onMounted(async () => {
+  const user = await getUserFromStorage()
+
+  if (props.event.creator?.uuid === user?.uuid) {
+    isJoinedToEvent.value = true
+    return
+  }
+
+  if (props.event.members?.some((uuid) => uuid === user?.uuid)) {
+    isJoinedToEvent.value = true
+  }
 })
 </script>
 

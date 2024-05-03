@@ -2,13 +2,14 @@ import { Preferences } from "@capacitor/preferences"
 
 export type User = {
   email?: string
+  uuid?: string
   username?: string
   avatar?: string
   description?: string
   token?: string
   joined_teams?: any[]
   joined_activities?: any[]
-  created_activities?: any[]
+  created_events?: any[]
 }
 
 export const saveUserToStorage = async (payload: User) => {
