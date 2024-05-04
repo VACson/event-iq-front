@@ -1,13 +1,6 @@
 <template>
   <IonPage>
     <IonContent>
-      <IonRefresher
-        slot="fixed"
-        @ionRefresh="handleRefresh($event)"
-      >
-        <IonRefresherContent />
-      </IonRefresher>
-
       <div class="categories-tiles">
         <EventCategoryPreview
           v-for="event in fetchedActivities"
@@ -16,6 +9,10 @@
           class="categories-tiles__item"
         />
       </div>
+
+      <IonInfiniteScroll @ionInfinite="ionInfinite">
+        <IonInfiniteScrollContent />
+      </IonInfiniteScroll>
     </IonContent>
   </IonPage>
 </template>
@@ -25,9 +22,9 @@ import { ref, onMounted } from "vue"
 import {
   IonPage,
   IonContent,
-  IonRefresher,
-  IonRefresherContent,
-  onIonViewDidEnter
+  onIonViewDidEnter,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent
 } from "@ionic/vue"
 import EventCategoryPreview from "../components/EventCategoryPreview.vue"
 import { Activity, fetchActivities } from "../api/activities"
@@ -42,19 +39,16 @@ interface RefresherCustomEvent extends CustomEvent {
 
 const fetchedActivities = ref<Array<Activity>>([])
 
-const handleRefresh = (event: RefresherCustomEvent) => {
-  try {
-    getActivities()
-    event.target.complete()
-  } catch (e) {
-    alert(e)
-  }
+const ionInfinite = async (event: any) => {
+  getActivities()
+  setTimeout(() => event.target.complete(), 500)
 }
 
 const getActivities = async () => {
   try {
     const { data } = await fetchActivities({ queryParams: { limit: 10, offset: 10 } })
     fetchedActivities.value = data.results
+    return Promise.resolve(data)
   } catch (e: any) {
     fetchedActivities.value = e.response.data
   }

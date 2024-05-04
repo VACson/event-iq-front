@@ -1,9 +1,9 @@
 <template>
   <IonPage>
     <IonContent class="ion-padding">
-      <IonTitle>
+      <BasePageTitle>
         {{ $t("teams.title") }}
-      </IonTitle>
+      </BasePageTitle>
 
       <!-- <BaseInputSearch
         v-model="form.search"
@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import { Team, fetchTeams } from "@/api/teams"
-import { BaseInputSearch } from "@/components/Base"
+import { BaseInputSearch, BasePageTitle } from "@/components/Base"
 import TeamCard from "@/components/TeamCard.vue"
 import {
   InfiniteScrollCustomEvent,

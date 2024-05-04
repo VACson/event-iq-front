@@ -1,7 +1,10 @@
 <template>
   <IonPage>
     <IonContent class="ion-padding">
-      <BasePageTitle>{{ $t("create_page.title") }}</BasePageTitle>
+      <BasePageTitle>
+        {{ $t("create_page.title") }}
+      </BasePageTitle>
+
       <BaseForm>
         <BaseInput
           :placeholder="$t('create_page.activity_name')"
