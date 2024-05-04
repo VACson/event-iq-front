@@ -30,11 +30,14 @@
           @click.stop="onLogout"
         />
 
-        <IonList>
-          <div @click="onSettingsClick">
+        <div class="settings__list">
+          <div
+            class="settings__list__item"
+            @click="onSettingsClick"
+          >
             {{ $t("profile.settings") }}
           </div>
-        </IonList>
+        </div>
       </IonContent>
     </IonMenu>
 
@@ -211,6 +214,7 @@ onIonViewWillEnter(() => nextTick(getUserData))
   &__item {
     color: var(--ion-color-dark);
     transition: color 0.3s;
+    cursor: pointer;
 
     &--active {
       color: var(--ion-color-primary);

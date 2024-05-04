@@ -18,7 +18,7 @@
       </div>
 
       <BaseButton
-        :className="isJoinedTeam ? 'light' : 'dark'"
+        :className="isJoinedTeam ? 'light-outline' : 'dark'"
         style="
           width: fit-content;
           height: fit-content;

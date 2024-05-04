@@ -19,7 +19,7 @@ import { computed, nextTick, ref, watch } from "vue"
 
 type Props = {
   disabled?: boolean
-  className?: "disabled" | "danger" | "dark" | "default" | "light" | "outline"
+  className?: "disabled" | "danger" | "dark" | "default" | "light" | "outline" | "light-outline"
   loading?: boolean
 }
 
@@ -39,6 +39,7 @@ const classes = {
   dark: "base-button--dark",
   light: "base-button--light",
   outline: "base-button--outline",
+  "light-outline": "base-button--light-outline",
   default: "base-button--default"
 }
 
@@ -86,16 +87,22 @@ const buttonClass = computed(() => {
     border: 1px solid var(--ion-color-dark);
   }
 
+  &--outline {
+    background-color: var(--ion-color-dark);
+    color: var(--ion-color-light);
+    border: 1px solid var(--ion-color-light);
+  }
+
   &--light {
     background-color: var(--ion-color-light);
     color: var(--ion-color-dark);
     border: 1px solid var(--ion-color-light);
   }
 
-  &--outline {
-    background-color: var(--ion-color-dark);
-    color: var(--ion-color-light);
-    border: 1px solid var(--ion-color-light);
+  &--light-outline {
+    background-color: var(--ion-color-light);
+    color: var(--ion-color-dark);
+    border: 1px solid var(--ion-color-dark);
   }
 }
 </style>

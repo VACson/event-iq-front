@@ -29,7 +29,7 @@
       </div>
 
       <BaseButton
-        :className="isJoinedToEvent ? 'light' : 'dark'"
+        :className="isJoinedToEvent ? 'light-outline' : 'dark'"
         style="
           width: fit-content;
           height: fit-content;

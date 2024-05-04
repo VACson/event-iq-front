@@ -65,7 +65,7 @@ const onCreateTeamClick = () => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .settings {
   &__list {
     display: flex;
