@@ -18,7 +18,7 @@
       </div>
 
       <BaseButton
-        className="dark"
+        :className="isJoinedTeam ? 'light' : 'dark'"
         style="
           width: fit-content;
           height: fit-content;
@@ -28,7 +28,7 @@
         "
         @click="handleJoinTeam"
       >
-        Join
+        {{ isJoinedTeam ? "Joined" : "Join" }}
       </BaseButton>
     </div>
   </div>
@@ -38,11 +38,16 @@
 import { imagesUrl } from "@/utils/http"
 import { Team, joinTeam } from "../api/teams"
 import { BaseButton } from "./Base"
+import { ComputedRef, inject, onMounted, ref } from "vue"
+import { User } from "@/utils/auth"
 type Props = {
   team: Team
 }
 
 const props = defineProps<Props>()
+const userInfo = inject<ComputedRef<User>>("userInfo")
+
+const isJoinedTeam = ref<boolean>(false)
 
 const getImageUrl = (image: string): string => {
   return `${imagesUrl}/${image}`
@@ -50,7 +55,20 @@ const getImageUrl = (image: string): string => {
 
 const handleJoinTeam = async () => {
   const res = await joinTeam({ uuid: props.team.uuid! })
+
+  isJoinedTeam.value = true
 }
+
+onMounted(() => {
+  if (props.team.creator?.uuid === userInfo?.value?.uuid) {
+    isJoinedTeam.value = true
+    return
+  }
+
+  if (props.team.members?.some(({ uuid }) => uuid === userInfo?.value?.uuid)) {
+    isJoinedTeam.value = true
+  }
+})
 </script>
 
 <style lang="scss" scoped>

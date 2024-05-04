@@ -48,15 +48,16 @@
 <script setup lang="ts">
 import { Activity, joinActivity } from "@/api/activities"
 import { imagesUrl } from "@/utils/http"
-import { onMounted, ref } from "vue"
+import { ComputedRef, inject, onMounted, ref } from "vue"
 import { BaseButton } from "./Base"
-import { getUserFromStorage } from "@/utils/auth"
+import { User, getUserFromStorage } from "@/utils/auth"
 
 type Props = {
   event: Activity
 }
 
 const props = defineProps<Props>()
+const userInfo = inject<ComputedRef<User>>("userInfo")
 
 const isJoinedToEvent = ref<Boolean>(false)
 
@@ -76,14 +77,12 @@ const handleJoinActivity = async () => {
 }
 
 onMounted(async () => {
-  const user = await getUserFromStorage()
-
-  if (props.event.creator?.uuid === user?.uuid) {
+  if (props.event.creator?.uuid === userInfo?.value?.uuid) {
     isJoinedToEvent.value = true
     return
   }
 
-  if (props.event.members?.some(({ uuid }) => uuid === user?.uuid)) {
+  if (props.event.members?.some(({ uuid }) => uuid === userInfo?.value?.uuid)) {
     isJoinedToEvent.value = true
   }
 })

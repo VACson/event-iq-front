@@ -38,6 +38,7 @@
     </IonTabs>
   </IonPage>
 </template>
+
 <script setup lang="ts">
 import {
   IonTabs,

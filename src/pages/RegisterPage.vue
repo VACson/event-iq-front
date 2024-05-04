@@ -9,7 +9,7 @@
         <IonIcon :icon="returnUpBack" />
       </IonButton>
 
-      <IonLabel class="label">{{ $t("auth.register_title") }}</IonLabel>
+      <BasePageTitle class="label">{{ $t("auth.register_title") }}</BasePageTitle>
 
       <BaseForm>
         <BaseInput
@@ -45,23 +45,11 @@
 <script setup lang="ts">
 import { returnUpBack } from "ionicons/icons"
 import { inject, reactive, ref } from "vue"
-import {
-  IonPage,
-  IonContent,
-  IonIcon,
-  IonList,
-  IonListHeader,
-  IonLabel,
-  IonButton,
-  IonInput,
-  useIonRouter,
-  IonSpinner
-} from "@ionic/vue"
+import { IonPage, IonContent, IonIcon, IonButton, useIonRouter, IonSpinner } from "@ionic/vue"
 import * as authApi from "../api/auth"
 import { saveUserToStorage } from "../utils/auth"
-import { BaseInput, BaseButton, BaseForm } from "../components/Base/"
+import { BaseInput, BaseButton, BaseForm, BasePageTitle } from "../components/Base/"
 import { useRouter } from "vue-router"
-import { onMounted } from "vue"
 
 const router = useIonRouter()
 const vueRouter = useRouter()

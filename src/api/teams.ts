@@ -8,6 +8,7 @@ export type Team = {
   description?: string
   avatar?: string | File
   creator?: User
+  members?: Array<User>
 }
 
 type ServiceParams = {
@@ -21,6 +22,10 @@ export const createNewTeam = (team: Team) => {
 export const fetchTeams = ({ queryParams }: ServiceParams) => {
   const query = getRequestQueryParams(queryParams)
   return API.get("/teams" + query)
+}
+
+export const updateTeam = (uuid: string, payload: Partial<Team>) => {
+  return API.patch(`/teams/${uuid}`, payload)
 }
 
 export const joinTeam = ({ uuid }: { uuid: string }) => {

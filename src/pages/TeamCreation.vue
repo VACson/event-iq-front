@@ -26,8 +26,15 @@
           @change="onPhotoChange"
         />
 
+        <img
+          v-if="imageSrc"
+          :src="imageSrc"
+          class="image-preview"
+        />
+
         <BaseButton
           className="dark"
+          :loading="isFetching"
           @click="onSubmit"
         >
           {{ $t("teams.create_new") }}
@@ -38,17 +45,26 @@
 </template>
 
 <script setup lang="ts">
-import { Team, createNewTeam } from "@/api/teams"
+import { uploadNewImage } from "@/api/images"
+import { Team, createNewTeam, updateTeam } from "@/api/teams"
 import { BaseButton, BaseForm, BaseInput, BasePageTitle } from "@/components/Base"
-import { IonContent, IonPage } from "@ionic/vue"
-import { reactive, ref } from "vue"
+import { IonContent, IonPage, useIonRouter } from "@ionic/vue"
+import { computed, reactive, ref } from "vue"
+
+const router = useIonRouter()
 
 const photoInputRef = ref()
+const isFetching = ref<boolean>(false)
 
 const form = reactive<Team>({
   name: "",
   description: "",
   avatar: undefined
+})
+
+const imageSrc = computed<string>(() => {
+  if (!form.avatar) return ""
+  return URL.createObjectURL(form.avatar as File)
 })
 
 const onChooseImage = () => {
@@ -62,7 +78,46 @@ const onPhotoChange = (e: Event) => {
   form.avatar = files[0]
 }
 
-const onSubmit = () => {
-  createNewTeam(form)
+const onSubmit = async () => {
+  try {
+    isFetching.value = true
+
+    const { avatar, ...payload } = form
+    const teamResponse = await createNewTeam(payload)
+
+    if (avatar && teamResponse.data.uuid) {
+      const { data } = await uploadNewImage(avatar as File)
+
+      await updateTeam(teamResponse.data.uuid, { avatar: data.filename })
+    }
+
+    resetForm()
+    router.navigate({ name: "Discover" })
+  } finally {
+    isFetching.value = false
+  }
+  try {
+    await createNewTeam(form)
+  } catch {}
+}
+
+const resetForm = () => {
+  form.name = ""
+  form.description = ""
+  form.avatar = undefined
 }
 </script>
+
+<style scoped lang="scss">
+.label {
+  font-size: 24px;
+  font-weight: medium;
+}
+
+.image-preview {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 4px;
+}
+</style>

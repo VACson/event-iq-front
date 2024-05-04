@@ -9,7 +9,7 @@
         <IonIcon :icon="returnUpBack" />
       </IonButton>
 
-      <IonLabel class="label">{{ $t("auth.login_title") }}</IonLabel>
+      <BasePageTitle class="label">{{ $t("auth.login_title") }}</BasePageTitle>
 
       <BaseForm>
         <BaseInput
@@ -38,22 +38,11 @@
 <script setup lang="ts">
 import { returnUpBack } from "ionicons/icons"
 import { inject, reactive, ref } from "vue"
-import {
-  IonPage,
-  IonContent,
-  IonIcon,
-  IonList,
-  IonListHeader,
-  IonLabel,
-  IonButton,
-  IonInput,
-  useIonRouter,
-  IonSpinner
-} from "@ionic/vue"
+import { IonPage, IonContent, IonIcon, IonButton, useIonRouter } from "@ionic/vue"
 import * as authApi from "../api/auth"
 import { saveUserToStorage } from "../utils/auth"
 import { useRouter } from "vue-router"
-import { BaseInput, BaseButton, BaseForm } from "../components/Base/"
+import { BaseInput, BaseButton, BaseForm, BasePageTitle } from "../components/Base/"
 
 const setUser = inject<Function>("setUser")
 

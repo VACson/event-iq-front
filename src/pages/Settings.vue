@@ -36,7 +36,7 @@
 import { updateProfilePhoto } from "@/api/users"
 import { BasePageTitle } from "@/components/Base"
 import { getUserFromStorage, saveUserToStorage } from "@/utils/auth"
-import { IonContent, IonItem, IonLabel, IonList, IonPage, IonTitle, useIonRouter } from "@ionic/vue"
+import { IonContent, IonPage, useIonRouter } from "@ionic/vue"
 import { ref } from "vue"
 
 const router = useIonRouter()

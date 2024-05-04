@@ -31,7 +31,7 @@ const router = useIonRouter()
 const vueRouter = useRouter()
 
 const user = ref<User>({ email: undefined, username: undefined, token: undefined })
-const userInfo = computed(() => Boolean(user.value))
+const userInfo = computed(() => user.value)
 
 const setUser = (payload: User) => {
   user.value = { ...user.value, ...payload }
@@ -66,6 +66,6 @@ onBeforeMount(async () => {
   router.push({ name: "Welcome" })
 })
 
-provide("userInfo", userInfo.value)
+provide("userInfo", userInfo)
 provide("setUser", setUser)
 </script>

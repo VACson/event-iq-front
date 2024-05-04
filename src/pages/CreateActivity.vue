@@ -1,7 +1,7 @@
 <template>
   <IonPage>
     <IonContent class="ion-padding">
-      <IonLabel class="label">{{ $t("create_page.title") }}</IonLabel>
+      <BasePageTitle>{{ $t("create_page.title") }}</BasePageTitle>
       <BaseForm>
         <BaseInput
           :placeholder="$t('create_page.activity_name')"
@@ -35,6 +35,12 @@
           @change="onPhotoChange"
         />
 
+        <img
+          v-if="imageSrc"
+          :src="imageSrc"
+          class="image-preview"
+        />
+
         <BaseButton
           className="dark"
           :loading="isFetching"
@@ -48,10 +54,10 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue"
-import { IonPage, IonContent, IonLabel, useIonRouter } from "@ionic/vue"
+import { computed, reactive, ref } from "vue"
+import { IonPage, IonContent, useIonRouter } from "@ionic/vue"
 import { Activity, createNewActivity, updateActivity } from "../api/activities"
-import { BaseButton, BaseForm, BaseInput } from "@/components/Base"
+import { BaseButton, BaseForm, BaseInput, BasePageTitle } from "@/components/Base"
 import { uploadNewImage } from "@/api/images"
 
 const router = useIonRouter()
@@ -67,6 +73,11 @@ const form = reactive<Activity>({
 })
 
 const isFetching = ref(false)
+
+const imageSrc = computed(() => {
+  if (!form.image) return ""
+  return URL.createObjectURL(form.image as File)
+})
 
 const onCreateActivity = async () => {
   try {
@@ -90,6 +101,10 @@ const onCreateActivity = async () => {
 
 const resetForm = () => {
   form.name = ""
+  form.location = ""
+  form.date = ""
+  form.description = ""
+  form.image = undefined
 }
 
 const onChooseImage = () => {
@@ -108,5 +123,12 @@ const onPhotoChange = (e: Event) => {
 .label {
   font-size: 24px;
   font-weight: medium;
+}
+
+.image-preview {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 4px;
 }
 </style>
