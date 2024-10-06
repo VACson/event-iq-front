@@ -25,6 +25,10 @@ export const fetchActivities = ({ queryParams }: ServiceParams) => {
   return API.get("/activities")
 }
 
+export const fetchActivity = ({ uuid }: { uuid: string }) => {
+  return API.get(`/activities/${uuid}`)
+}
+
 export const updateActivity = (uuid: string, activity: Partial<Activity>) => {
   return API.patch(`/activities/${uuid}`, activity)
 }

@@ -7,6 +7,7 @@
           :key="event.uuid"
           :event="event"
           class="categories-tiles__item"
+          @click="goToActivityPage(event)"
         />
       </div>
 
@@ -18,24 +19,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
+import { ref, onMounted, inject, ComputedRef } from "vue"
 import {
   IonPage,
   IonContent,
   onIonViewDidEnter,
   IonInfiniteScroll,
-  IonInfiniteScrollContent
+  IonInfiniteScrollContent,
+  useIonRouter
 } from "@ionic/vue"
 import EventCategoryPreview from "../components/EventCategoryPreview.vue"
 import { Activity, fetchActivities } from "../api/activities"
 
-interface RefresherEventDetail {
-  complete(): void
-}
-interface RefresherCustomEvent extends CustomEvent {
-  detail: RefresherEventDetail
-  target: HTMLIonRefresherElement
-}
+const router = useIonRouter()
+const userInfo = inject<ComputedRef>("userInfo")
 
 const fetchedActivities = ref<Array<Activity>>([])
 
@@ -45,6 +42,7 @@ const ionInfinite = async (event: any) => {
 }
 
 const getActivities = async () => {
+  if (!userInfo?.value?.token) return setTimeout(() => getActivities(), 500)
   try {
     const { data } = await fetchActivities({ queryParams: { limit: 10, offset: 10 } })
     fetchedActivities.value = data.results
@@ -52,6 +50,10 @@ const getActivities = async () => {
   } catch (e: any) {
     fetchedActivities.value = e.response.data
   }
+}
+
+const goToActivityPage = (event: Activity) => {
+  router.push({ name: "ActivityPage", params: { uuid: event.uuid } })
 }
 
 onMounted(getActivities)

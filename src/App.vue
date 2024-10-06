@@ -17,11 +17,6 @@ import { useRouter } from "vue-router"
 import { StatusBar } from "@capacitor/status-bar"
 import { Capacitor } from "@capacitor/core"
 
-// iOS only
-window.addEventListener("statusTap", function () {
-  // console.log("statusbar tapped")
-})
-
 const setStatusBarStyleDark = async () => {
   if (!Capacitor.isNativePlatform()) return
   await StatusBar.hide()

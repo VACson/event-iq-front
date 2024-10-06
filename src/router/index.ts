@@ -39,6 +39,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../pages/Discover.vue")
       },
       {
+        path: "activity/:uuid",
+        name: "ActivityPage",
+        component: () => import("../pages/Activity.vue")
+      },
+      {
         path: "create_activity",
         name: "Create",
         component: () => import("../pages/CreateActivity.vue")
